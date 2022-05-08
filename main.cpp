@@ -8,25 +8,29 @@ int main(int argc, char** argv) {
      * argv[1] = config.dat
      */
     char* config = nullptr;
-    char* output = nullptr;
+    string output = "output.dat";
     std::vector<char*> input_files;
     int i=2;
     while(strcmp(argv[i],"-c") != 0 && strcmp(argv[i],"-o") != 0 && i<argc) {
         input_files.push_back(argv[i]);
         i++;
     }
-    if(i<argc) {
+    while(i<argc) {
         if(strcmp(argv[i],"-c") == 0) {
             config = argv[i+1];
-            i++;
+            i += 2;
+            continue;
         }
         if(strcmp(argv[i], "-o") == 0) {
             output = argv[i+1];
-            i++;
+            i += 2;
+            continue;
         }
     }
+
     Ex2 *ex2 = new Ex2(config);
     Graph graph(ex2->getWT(), ex2->getTT());
+
     graph.printWT();
     graph.printTT();
 
@@ -34,10 +38,3 @@ int main(int argc, char** argv) {
 }
 
 
-d:  e
-e:  f
-f:  -
-
-d:  -
-e:  d
-f:  e
