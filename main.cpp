@@ -29,10 +29,12 @@ int main(int argc, char** argv) {
     }
 
     Ex2 *ex2 = new Ex2(config);
-    Graph graph(ex2->getWT(), ex2->getTT());
+    Graph<int> busGraph(ex2->getTT(), ex2->getWT().bus);
+    Graph<int> tramGraph(ex2->getTT(), ex2->getWT().tram);
+    Graph<int> sprinterGraph(ex2->getTT(), ex2->getWT().sprinter);
+    Graph<int> railGraph(ex2->getTT(), ex2->getWT().rail);
 
-    graph.printWT();
-    graph.printTT();
+    busGraph.printTT();
 
 
 }

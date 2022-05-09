@@ -13,26 +13,29 @@
 #include <cstring>
 #include <memory>
 
-
+template <class V>
 class Graph {
 private:
-    vector<Station> graph;
-    Waiting_time wt;
+    vector<V> graph;
+    const int stop_t;
     Transit_time tt;
 
 public:
-    Graph(Waiting_time w, Transit_time t) : wt(w), tt(t) {}
-    void printWT() const {
-        std::cout << "bus wt: " << wt.bus << std::endl;
-        std::cout << "tram wt: " << wt.tram << std::endl;
-        std::cout << "sprinter wt: " << wt.sprinter << std::endl;
-        std::cout << "rail wt: " << wt.rail << std::endl;
-    }
+    Graph(Transit_time t, int st) : tt(t), stop_t(st) {}
     void printTT() const {
         std::cout << "intercity tt: " << tt.intercity << std::endl;
         std::cout << "centraal tt: " << tt.centraal << std::endl;
         std::cout << "stad tt: " << tt.stad << std::endl;
     }
+
+    void addVertex(const V& v);
+    void addEdge(V src, V dest, int w);
+
+    int getVertexIndex(V v);
+    Graph<V> GetReverse();
+
+    void print();
+
 //    void addStation(const Station& station) {
 //        for(auto & i : graph) {
 //            if(i.getName() == station.getName()) {

@@ -17,7 +17,7 @@ class Station;
 struct edge {
     char type;
     int weight;
-    unique_ptr<Station> dest;
+//    unique_ptr<Station> dest;
 };
 
 class Station {
@@ -34,7 +34,7 @@ public:
         edge e;
         e.type = type;
         e.weight = w;
-        e.dest = std::move(dest);
+//        e.dest = std::move(dest);
         neighbors.push_back(e);
     }
 
