@@ -4,9 +4,10 @@
 #include <cstring>
 
 int main(int argc, char** argv) {
-    /*
-     * argv[1] = config.dat
-     */
+    if(argc < 3) {
+        cerr << "print some error!!!" << endl;    // -------------
+        exit(-1);
+    }
     char* config = nullptr;
     string output = "output.dat";
     std::vector<char*> input_files;
@@ -29,14 +30,22 @@ int main(int argc, char** argv) {
     }
 
     Ex2 *ex2 = new Ex2(config);
-    Graph<int> busGraph(ex2->getTT(), ex2->getWT().bus);
-    Graph<int> tramGraph(ex2->getTT(), ex2->getWT().tram);
-    Graph<int> sprinterGraph(ex2->getTT(), ex2->getWT().sprinter);
-    Graph<int> railGraph(ex2->getTT(), ex2->getWT().rail);
+    Graph<int> busGraph(ex2->getTT(), "bus", ex2->getWT().bus);
+    Graph<int> tramGraph(ex2->getTT(), "tram", ex2->getWT().tram);
+    Graph<int> sprinterGraph(ex2->getTT(), "sprinter", ex2->getWT().sprinter);
+    Graph<int> railGraph(ex2->getTT(), "rail", ex2->getWT().rail);
 
     busGraph.printTT();
+    tramGraph.printTT();
+    sprinterGraph.printTT();
+    railGraph.printTT();
 
 
+    string command;
+    cin >> command;
+
+    while(command != "EXIT") {}
+    return 0;
 }
 
 
