@@ -3,4 +3,4 @@ project(Exercise_2)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(Exercise_2 main.cpp)
+add_executable(Exercise_2 main.cpp Station.cpp Ex2.cpp Graph.cpp)

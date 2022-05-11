@@ -1,5 +1,5 @@
 //
-// Created by omril on 05/07/2022.
+// Created by Omri Leizerovitch on 05/07/2022.
 //
 
 #include "Graph.h"
@@ -18,9 +18,9 @@ void Graph<V>::addEdge(V src, V dest, int w) {
 }
 
 template <class V>
-int Graph<V>::getVertexIndex(V v) {
+int Graph<V>::getVertexIndex(string v) {
     for(int i=0; i< static_cast<int>(graph.size()); i++) {
-        if(graph[i] == v) {
+        if(graph[i].getName() == v) {
             return i;
         }
     }
@@ -28,12 +28,12 @@ int Graph<V>::getVertexIndex(V v) {
 }
 
 template <class V>
-void Graph<V>::outBound(V src) {
+void Graph<V>::outBound(string src) {
     cout << graphType << ": ";
     int count = 0;
     list<V> queue;
     graph[getVertexIndex(src)].changeVisit(true);
-    queue.push_back(src);
+    queue.push_back(graph[getVertexIndex(src)]);
     while(!queue.empty()) {
         src = queue.front();
         queue.pop_front();
@@ -54,14 +54,14 @@ void Graph<V>::outBound(V src) {
     }
 } // BFS
 template <class V>
-void Graph<V>::inBound(V dest) {
+void Graph<V>::inBound(string dest) {
     Graph<V> revGraph = getReverse();
 
     cout << graphType << ": ";
     int count = 0;
     list<V> queue;
     revGraph[getVertexIndex(dest)].changeVisit(true);
-    queue.push_back(dest);
+    queue.push_back(revGraph[getVertexIndex(dest)]);
     while(!queue.empty()) {
         dest = queue.front();
         queue.pop_front();
@@ -82,12 +82,12 @@ void Graph<V>::inBound(V dest) {
     }
 } // rev BFS
 template <class V>
-int Graph<V>::uniExpress(V src, V dest) {} // shortest path (Dijkstra)
+int Graph<V>::uniExpress(string src, string dest) {} // shortest path (Dijkstra)
 template <class V>
-int Graph<V>::multiExpress(V src, V dest) {} // shortest path (Dijkstra)
+int Graph<V>::multiExpress(string src, string dest) {} // shortest path (Dijkstra)
 template<class V>
 void Graph<V>::print() {
-    cout << graphType << ": " << endl;
+    cout << graphType << " graph: " << endl;
     for(int i=0; i<static_cast<int>(graph.size()); i++) {
         cout << '\t' << graph[i].getName() << " : " << graph[i].getAdj() << endl;
     }

@@ -1,5 +1,5 @@
 //
-// Created by omril on 05/07/2022.
+// Created by Omri Leizerovitch on 05/07/2022.
 //
 
 #ifndef EXERCISE_2_GRAPH_H
@@ -7,6 +7,7 @@
 
 #include "Ex2.h"
 #include "Station.h"
+#include <map>
 #include <vector>
 #include <list>
 #include <iostream>
@@ -16,7 +17,8 @@
 template <class V>
 class Graph {
 private:
-    vector<V> graph;
+    vector<V> graph;   // maybe map<V,E> graph
+//    vector<E> edges;
     string graphType;
     const int stop_t;
     Transit_time tt;
@@ -32,13 +34,13 @@ public:
     void addVertex(const V& v);
     void addEdge(V src, V dest, int w);
 
-    int getVertexIndex(V v);
+    int getVertexIndex(string v);
     Graph<V> getReverse();
 
-    void outBound(V src);               // [2]  V
-    void inBound(V dest);               // [3]  V
-    int uniExpress(V src, V dest);      // [4]
-    int multiExpress(V src, V dest);    // [5]
+    void outBound(string src);               // [2]  V
+    void inBound(string dest);               // [3]  V
+    int uniExpress(string src, string dest);      // [4]
+    int multiExpress(string src, string dest);    // [5]
     void print();                       // [6]  V
 
 };
