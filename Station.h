@@ -16,7 +16,7 @@ using namespace std;
 class Station;
 
 struct edge {
-    Station* dest;
+    string dest;
     double weight;
 };
 
@@ -32,9 +32,12 @@ public:
     Station(string n, int t) : name(std::move(n)), transit_t(t) {}
 
     string getName() const {return name;}
-    vector<edge> getAdj() const {return adjList;}
-    void changeVisit(bool a) {visited = a;}
+    int getTT() const {return transit_t;}
     bool isVisited() const {return visited;}
+    vector<edge> getAdj() const {return adjList;}
+
+    void changeVisit(bool a) {visited = a;}
+
     bool containEdge(const string& dest, double w) const;
     void addEdge(string dest, double w, Transit_time tt);
 };

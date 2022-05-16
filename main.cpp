@@ -30,11 +30,37 @@ int main(int argc, char** argv) {
         }
     }
 
+    ofstream out(output);
+
     Ex2 *ex2 = new Ex2(config);
     Graph busGraph(ex2->getTT(), "bus", ex2->getWT().bus);
     Graph tramGraph(ex2->getTT(), "tram", ex2->getWT().tram);
     Graph sprinterGraph(ex2->getTT(), "sprinter", ex2->getWT().sprinter);
     Graph railGraph(ex2->getTT(), "rail", ex2->getWT().rail);
+
+    busGraph.addEdge("LagoonSouth", "LagoonNorth", 34);
+    busGraph.addEdge("LagoonNorth", "LagoonSouth", 36);
+
+    tramGraph.addEdge("CanibalCove", "PiccaninnyPlains", 4);
+    tramGraph.addEdge("PiccaninnyPlains", "Neverseas", 3);
+    tramGraph.addEdge("Neverseas", "CSPiccaninnyMain", 4);
+    tramGraph.addEdge("CSPiccaninnyMain", "NeverlandPlains", 3);
+    tramGraph.addEdge("NeverlandPlains", "PixieHollow", 5);
+    tramGraph.addEdge("PixieHollow", "MazeOfRegrets", 4);
+    tramGraph.addEdge("MazeOfRegrets", "NeverpeakMountain", 7);
+    tramGraph.addEdge("NeverpeakMountain", "CanibalCove", 8);
+
+    sprinterGraph.addEdge("LagoonEast", "LagoonWest", 12);
+    sprinterGraph.addEdge("LagoonWest", "LagoonEast", 12);
+
+    railGraph.addEdge("LagoonSouth", "LagoonWest", 6);
+    railGraph.addEdge("LagoonWest", "LagoonSouth", 7);
+    railGraph.addEdge("LagoonSouth", "LagoonEast", 8);
+    railGraph.addEdge("LagoonEast", "LagoonSouth", 9);
+    railGraph.addEdge("LagoonNorth", "LagoonWest", 15);
+    railGraph.addEdge("LagoonWest", "LagoonNorth", 14);
+    railGraph.addEdge("LagoonNorth", "LagoonEast", 17);
+    railGraph.addEdge("LagoonEast", "LagoonNorth", 16);
 
     string line, command, word;
     string params[2];
@@ -74,7 +100,8 @@ int main(int argc, char** argv) {
                 cerr << "Not enough information to outbound.\nPlease try again." << endl;
             }
             else {
-                if(!busGraph.containVertex(params[0])) {
+                if(!busGraph.containVertex(params[0]) && !tramGraph.containVertex(params[0])
+                && !sprinterGraph.containVertex(params[0]) && !railGraph.containVertex(params[0])) {
                     cerr << params[0] << " does not exist in the current network. \n";
                 }
                 else {
@@ -83,7 +110,6 @@ int main(int argc, char** argv) {
                     sprinterGraph.outBound(params[0]);
                     railGraph.outBound(params[0]);
                 }
-                cout << "now outbound: " << params[0] << endl;
             }
         }
         else if(command == "inbound") {
@@ -91,7 +117,8 @@ int main(int argc, char** argv) {
                 cerr << "Not enough information to inbound.\nPlease try again." << endl;
             }
             else {
-                if(!busGraph.containVertex(params[0])) {
+                if(!busGraph.containVertex(params[0]) && !tramGraph.containVertex(params[0])
+                   && !sprinterGraph.containVertex(params[0]) && !railGraph.containVertex(params[0])) {
                     cerr << params[0] << " does not exist in the current network. \n";
                 }
                 else {
@@ -100,7 +127,6 @@ int main(int argc, char** argv) {
                     sprinterGraph.inBound(params[0]);
                     railGraph.inBound(params[0]);
                 }
-                cout << "now inbound: " << params[0] << endl;
             }
         }
         else if(command == "uniExpress") {
@@ -108,10 +134,12 @@ int main(int argc, char** argv) {
                 cerr << "Not enough information to uniExpress.\nPlease try again." << endl;
             }
             else {
-                if(!busGraph.containVertex(params[0])) {
+                if(!busGraph.containVertex(params[0]) && !tramGraph.containVertex(params[0])
+                   && !sprinterGraph.containVertex(params[0]) && !railGraph.containVertex(params[0])) {
                     cerr << params[0] << " does not exist in the current network. \n";
                 }
-                else if(!busGraph.containVertex(params[1])) {
+                if(!busGraph.containVertex(params[1]) && !tramGraph.containVertex(params[1])
+                   && !sprinterGraph.containVertex(params[1]) && !railGraph.containVertex(params[1])) {
                     cerr << params[1] << " does not exist in the current network. \n";
                 }
                 else {
@@ -120,7 +148,6 @@ int main(int argc, char** argv) {
                     sprinterGraph.uniExpress(params[0], params[1]);
                     railGraph.uniExpress(params[0], params[1]);
                 }
-                cout << "now uniExpress: " << params[0] << " " << params[1] << endl;
             }
         }
         else if(command == "multiExpress") {
@@ -142,11 +169,8 @@ int main(int argc, char** argv) {
             }
         }
         else if(command == "print") {
-            busGraph.print();
-            tramGraph.print();
-            sprinterGraph.print();
-            railGraph.print();
-            cout << "now printing to " << output << " the graph" << endl;
+            out << busGraph << endl << tramGraph << endl << sprinterGraph << endl << railGraph << endl;
+            cout << "printing to " << output << " the graph" << endl;
         }
         else if(command != "EXIT"){
             cerr << command  << " is not an option!" << endl;

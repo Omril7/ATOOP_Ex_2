@@ -165,17 +165,146 @@ void Graph<V>::print() {
     }
 }
 
+//
+// Station.h
+//
 
-// V needs V& operator=(const V& v) method
-// E needs E& operator=(const E& e) method   -> maybe
-// E needs V getVertex() const method
-// V needs bool containEdge(V dest, double w) method
-// V needs void addEdge(V dest, double w) method
-// V needs void changeVisit(bool b) method
-// V needs vector<E> getAdj() const method
+#ifndef EXERCISE_2_STATION_H
+#define EXERCISE_2_STATION_H
 
-// V needs bool isVisited() const method
-// V needs string getName() const method
+#include <string>
+#include <utility>
+#include <vector>
+#include <memory>
+#include "Ex2.h"
 
-// E needs pointers to V in graph,
-// because when we change in graph the V in E needs to adjust
+using namespace std;
+
+class Station;
+
+struct edge {
+    Station* dest;
+    double weight;
+};
+
+class Station {
+private:
+    string name;
+    int transit_t{};
+    bool visited = false;
+    vector<edge> adjList;
+
+public:
+    Station() = default;
+    Station(string n, int t) : name(std::move(n)), transit_t(t) {}
+
+    string getName() const {return name;}
+    int getTT() const {return transit_t;}
+    bool isVisited() const {return visited;}
+    vector<edge> getAdj() const {return adjList;}
+
+    void changeVisit(bool a) {visited = a;}
+
+    bool containEdge(const string& dest, double w) const;
+    void addEdge(string dest, double w, Transit_time tt);
+};
+
+
+class Intercity : public Station {
+public:
+    Intercity(string name, int t=15) : Station(name, t) {cout << "Intercity c'tor\n";}
+};
+class Centraal : public Station {
+public:
+    Centraal(string name, int t=10) : Station(name, t) {cout << "Centraal c'tor\n";}
+};
+class Stad : public Station {
+public:
+    Stad(string name, int t=5) : Station(name, t) {cout << "Stad c'tor\n";}
+};
+
+#endif //EXERCISE_2_STATION_H
+
+//
+// Station .cpp
+//
+
+#include "Station.h"
+
+bool Station::containEdge(const string& dest, double w) const {
+    for(auto i : adjList) {
+        if(i.dest->getName() == dest && i.weight == w) {
+            return true;
+        }
+    }
+    return false;
+}
+void Station::addEdge(string dest, double w, Transit_time tt) {
+    if(!containEdge(dest, w)) {
+        edge e;
+        if(dest[0] == 'I' && dest[1] == 'C') { // intercity
+            e.dest = new Intercity(dest, tt.intercity);
+        }
+        if(dest[0] == 'C' && dest[1] == 'S') { // centraal
+            e.dest = new Centraal(dest, tt.centraal);
+        }
+        else { // stad
+            e.dest = new Stad(dest, tt.stad);
+        }
+        e.weight = w;
+        adjList.push_back(e);
+    }
+}
+
+
+typedef pair<int, int> iPair;
+void Graph::shortestPath(int src) {
+
+    priority_queue<iPair, vector <iPair> , greater<iPair> > pq;
+
+    // Create a vector for distances and initialize all
+    // distances as infinite (INF)
+    vector<int> dist(V, INF);
+
+    // Insert source itself in priority queue and initialize
+    // its distance as 0.
+    pq.push(make_pair(0, src));
+    dist[src] = 0;
+
+    /* Looping till priority queue becomes empty (or all
+      distances are not finalized) */
+    while (!pq.empty())
+    {
+        // The first vertex in pair is the minimum distance
+        // vertex, extract it from priority queue.
+        // vertex label is stored in second of pair (it
+        // has to be done this way to keep the vertices
+        // sorted distance (distance must be first item
+        // in pair)
+        int u = pq.top().second;
+        pq.pop();
+
+        // 'i' is used to get all adjacent vertices of a vertex
+        list< pair<int, int> >::iterator i;
+        for (i = adj[u].begin(); i != adj[u].end(); ++i)
+        {
+            // Get vertex label and weight of current adjacent
+            // of u.
+            int v = (*i).first;
+            int weight = (*i).second;
+
+            //  If there is shorted path to v through u.
+            if (dist[v] > dist[u] + weight)
+            {
+                // Updating distance of v
+                dist[v] = dist[u] + weight;
+                pq.push(make_pair(dist[v], v));
+            }
+        }
+    }
+
+    // Print shortest distances stored in dist[]
+    printf("Vertex   Distance from Source\n");
+    for (int i = 0; i < V; ++i)
+        printf("%d \t\t %d\n", i, dist[i]);
+}
