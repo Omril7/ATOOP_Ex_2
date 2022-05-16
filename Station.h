@@ -9,15 +9,15 @@
 #include <utility>
 #include <vector>
 #include <memory>
+#include "Ex2.h"
 
 using namespace std;
 
 class Station;
 
 struct edge {
-    char type;
-    int weight;
-//    unique_ptr<Station> dest;
+    Station* dest;
+    double weight;
 };
 
 class Station {
@@ -25,25 +25,18 @@ private:
     string name;
     int transit_t{};
     bool visited = false;
-    vector<edge> neighbors;
+    vector<edge> adjList;
 
 public:
     Station() = default;
     Station(string n, int t) : name(std::move(n)), transit_t(t) {}
-    void addNeighbor(char type, int w, unique_ptr<Station> dest) {
-        edge e;
-        e.type = type;
-        e.weight = w;
-//        e.dest = std::move(dest);
-        neighbors.push_back(e);
-    }
 
     string getName() const {return name;}
+    vector<edge> getAdj() const {return adjList;}
     void changeVisit(bool a) {visited = a;}
     bool isVisited() const {return visited;}
-    std::vector<edge> getAdj() const {return neighbors;}
-    int numOfAdj() const {return neighbors.size();}
-    void resetAdj() {neighbors.resize(0);}
+    bool containEdge(const string& dest, double w) const;
+    void addEdge(string dest, double w, Transit_time tt);
 };
 
 

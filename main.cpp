@@ -31,21 +31,17 @@ int main(int argc, char** argv) {
     }
 
     Ex2 *ex2 = new Ex2(config);
-    Graph<Station> busGraph(ex2->getTT(), "bus", ex2->getWT().bus);
-    Graph<Station> tramGraph(ex2->getTT(), "tram", ex2->getWT().tram);
-    Graph<Station> sprinterGraph(ex2->getTT(), "sprinter", ex2->getWT().sprinter);
-    Graph<Station> railGraph(ex2->getTT(), "rail", ex2->getWT().rail);
-
-//    busGraph.printTT();
-//    tramGraph.printTT();
-//    sprinterGraph.printTT();
-//    railGraph.printTT();
-
+    Graph busGraph(ex2->getTT(), "bus", ex2->getWT().bus);
+    Graph tramGraph(ex2->getTT(), "tram", ex2->getWT().tram);
+    Graph sprinterGraph(ex2->getTT(), "sprinter", ex2->getWT().sprinter);
+    Graph railGraph(ex2->getTT(), "rail", ex2->getWT().rail);
 
     string line, command, word;
     string params[2];
     int count;
     while(line != "EXIT") {
+        params[0] = "";
+        params[1] = "";
         count = 0;
         getline(cin, line);
         istringstream iss(line);
@@ -59,44 +55,101 @@ int main(int argc, char** argv) {
             count++;
         }
         if(command == "load") {
-            cout << "now loaded file: " << params[0] << endl;
-//            if(loaded) {
-//                cout << "Update was successful." << endl;
-//            }
-//            else {
-//                cerr << "ERROR opening the specified file." << endl;
-//            }
+            if(params[0].empty()) {
+                cerr << "Not enough information to load.\nPlease try again." << endl;
+            }
+            else {
+                cout << "now loaded file: " << params[0] << endl;
+//                if(loaded) {
+//                    cout << "Update was successful." << endl;
+//                }
+//                else {
+//                    cerr << "ERROR opening the specified file." << endl;
+//                }
+            }
+
         }
-        if(command == "outbound") {
-//            busGraph.outBound(params[0]);
-//            tramGraph.outBound(params[0]);
-//            sprinterGraph.outBound(params[0]);
-//            railGraph.outBound(params[0]);
-            cout << "now outbound: " << params[0] << endl;
+        else if(command == "outbound") {
+            if(params[0].empty()) {
+                cerr << "Not enough information to outbound.\nPlease try again." << endl;
+            }
+            else {
+                if(!busGraph.containVertex(params[0])) {
+                    cerr << params[0] << " does not exist in the current network. \n";
+                }
+                else {
+                    busGraph.outBound(params[0]);
+                    tramGraph.outBound(params[0]);
+                    sprinterGraph.outBound(params[0]);
+                    railGraph.outBound(params[0]);
+                }
+                cout << "now outbound: " << params[0] << endl;
+            }
         }
-        if(command == "inbound") {
-//            busGraph.inBound(params[0]);
-//            tramGraph.inBound(params[0]);
-//            sprinterGraph.inBound(params[0]);
-//            railGraph.inBound(params[0]);
-            cout << "now inbound: " << params[0] << endl;
+        else if(command == "inbound") {
+            if(params[0].empty()) {
+                cerr << "Not enough information to inbound.\nPlease try again." << endl;
+            }
+            else {
+                if(!busGraph.containVertex(params[0])) {
+                    cerr << params[0] << " does not exist in the current network. \n";
+                }
+                else {
+                    busGraph.inBound(params[0]);
+                    tramGraph.inBound(params[0]);
+                    sprinterGraph.inBound(params[0]);
+                    railGraph.inBound(params[0]);
+                }
+                cout << "now inbound: " << params[0] << endl;
+            }
         }
-        if(command == "uniExpress") {
-//            busGraph.uniExpress(params[0], params[1]);
-//            tramGraph.uniExpress(params[0], params[1]);
-//            sprinterGraph.uniExpress(params[0], params[1]);
-//            railGraph.uniExpress(params[0], params[1]);
-            cout << "now uniExpress: " << params[0] << " " << params[1] << endl;
+        else if(command == "uniExpress") {
+            if(params[0].empty() || params[1].empty()) {
+                cerr << "Not enough information to uniExpress.\nPlease try again." << endl;
+            }
+            else {
+                if(!busGraph.containVertex(params[0])) {
+                    cerr << params[0] << " does not exist in the current network. \n";
+                }
+                else if(!busGraph.containVertex(params[1])) {
+                    cerr << params[1] << " does not exist in the current network. \n";
+                }
+                else {
+                    busGraph.uniExpress(params[0], params[1]);
+                    tramGraph.uniExpress(params[0], params[1]);
+                    sprinterGraph.uniExpress(params[0], params[1]);
+                    railGraph.uniExpress(params[0], params[1]);
+                }
+                cout << "now uniExpress: " << params[0] << " " << params[1] << endl;
+            }
         }
-        if(command == "multiExpress") {
-            cout << "now multiExpress: " << params[0] << " " << params[1] << endl;
+        else if(command == "multiExpress") {
+            if(params[0].empty() || params[1].empty()) {
+                cerr << "Not enough information to multiExpress.\nPlease try again." << endl;
+            }
+            else {
+                if(!busGraph.containVertex(params[0])) {
+                    cerr << params[0] << " does not exist in the current network. \n";
+                }
+                else if(!busGraph.containVertex(params[1])) {
+                    cerr << params[1] << " does not exist in the current network. \n";
+                }
+                else {
+
+                }
+
+                cout << "now multiExpress: " << params[0] << " " << params[1] << endl;
+            }
         }
-        if(command == "print") {
-//            busGraph.print();
-//            tramGraph.print();
-//            sprinterGraph.print();
-//            railGraph.print();
+        else if(command == "print") {
+            busGraph.print();
+            tramGraph.print();
+            sprinterGraph.print();
+            railGraph.print();
             cout << "now printing to " << output << " the graph" << endl;
+        }
+        else if(command != "EXIT"){
+            cerr << command  << " is not an option!" << endl;
         }
         iss.clear();
     }
