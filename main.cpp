@@ -4,6 +4,28 @@
 #include <cstring>
 #include <array>
 
+struct Trio {
+    char type;
+    string src;
+    string dest;
+    double weight;
+};
+vector<Trio> getFromFile(string fileName) {
+    vector<Trio> edges;
+    if(fileName[0] == 'b') {
+        // add input_files[i] to busGraph
+    }
+    if(fileName[0] == 't') {
+        // add input_files[i] to tramGraph
+    }
+    if(fileName[0] == 's') {
+        // add input_files[i] to sprinterGraph
+    }
+    if(fileName[0] == 'r') {
+        // add input_files[i] to railGraph
+    }
+}
+
 int main(int argc, char** argv) {
     if(argc < 3) {
         cerr << "Not enough information" << endl;
@@ -37,6 +59,27 @@ int main(int argc, char** argv) {
     Graph tramGraph(ex2->getTT(), "tram", ex2->getWT().tram);
     Graph sprinterGraph(ex2->getTT(), "sprinter", ex2->getWT().sprinter);
     Graph railGraph(ex2->getTT(), "rail", ex2->getWT().rail);
+
+    /*
+     * SET INPUT FILES HERE
+     */
+    for(int i=0; i<static_cast<int>(input_files.size()); i++) {
+        vector<Trio> temp = getFromFile(input_files[i]);
+        for(int j=0; j<static_cast<int>(temp.size()); j++) {
+            if(temp[j].type == 'b') {
+                busGraph.addEdge(temp[j].src, temp[j].dest, temp[j].weight);
+            }
+            if(temp[j].type == 't') {
+                tramGraph.addEdge(temp[j].src, temp[j].dest, temp[j].weight);
+            }
+            if(temp[j].type == 's') {
+                sprinterGraph.addEdge(temp[j].src, temp[j].dest, temp[j].weight);
+            }
+            if(temp[j].type == 'r') {
+                railGraph.addEdge(temp[j].src, temp[j].dest, temp[j].weight);
+            }
+        }
+    }
 
     busGraph.addEdge("LagoonSouth", "LagoonNorth", 34);
     busGraph.addEdge("LagoonNorth", "LagoonSouth", 36);
@@ -152,20 +195,20 @@ int main(int argc, char** argv) {
         }
         else if(command == "multiExpress") {
             if(params[0].empty() || params[1].empty()) {
-                cerr << "Not enough information to multiExpress.\nPlease try again." << endl;
+                cerr << "Not enough information to uniExpress.\nPlease try again." << endl;
             }
             else {
-                if(!busGraph.containVertex(params[0])) {
+                if(!busGraph.containVertex(params[0]) && !tramGraph.containVertex(params[0])
+                   && !sprinterGraph.containVertex(params[0]) && !railGraph.containVertex(params[0])) {
                     cerr << params[0] << " does not exist in the current network. \n";
                 }
-                else if(!busGraph.containVertex(params[1])) {
+                if(!busGraph.containVertex(params[1]) && !tramGraph.containVertex(params[1])
+                   && !sprinterGraph.containVertex(params[1]) && !railGraph.containVertex(params[1])) {
                     cerr << params[1] << " does not exist in the current network. \n";
                 }
                 else {
-
+                    cout << "now multiExpress: " << params[0] << " " << params[1] << endl;
                 }
-
-                cout << "now multiExpress: " << params[0] << " " << params[1] << endl;
             }
         }
         else if(command == "print") {
@@ -179,3 +222,4 @@ int main(int argc, char** argv) {
     }
     return 0;
 }
+

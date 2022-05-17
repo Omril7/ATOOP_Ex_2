@@ -28,7 +28,7 @@ public:
     void addVertex(string v);
     void addEdge(const string& src, const string& dest, double w);
     bool containVertex(const string& v) const;
-    bool containEdge(const string& src, const string& dest, double w) const;
+    bool containEdge(const string& src, const string& dest) const;
 
     vector<Station> getGraph() const {return graph;}
     string getGraphT() const {return graphType;}

@@ -2,14 +2,9 @@
 // Created by Omri Leizerovitch on 05/07/2022.
 //
 
-#include <xmath.h>
 #include <queue>
 #include <array>
 #include "Graph.h"
-
-bool Less(pair<double,string> a, pair<double,string> b) {
-    return a.first > b.first;
-}
 
 bool Graph::containVertex(const string& v) const {
     for(auto & i : graph) {
@@ -32,19 +27,28 @@ void Graph::addVertex(string v) {
         }
     }
 }
-bool Graph::containEdge(const string& src, const string& dest, double w) const {
+bool Graph::containEdge(const string& src, const string& dest) const {
     if(containVertex(src) && containVertex(dest)) {
         int i = getVertexIndex(src);
-        return graph[i].containEdge(dest, w);
+        return graph[i].containEdge(dest);
     }
     return false;
 }
 void Graph::addEdge(const string& src, const string& dest, double w) {
-    if(!containEdge(src, dest, w)) {
+    if(!containEdge(src, dest)) {
         addVertex(src);
         addVertex(dest);
         int i = getVertexIndex(src);
         graph[i].addEdge(dest, w, tt);
+    }
+    else { // if contains that edge - set min_weight{graph[src][dest].w, w}
+        for(int i=0; i<static_cast<int>(graph[getVertexIndex(src)].getAdj().size()); i++) {
+            if((graph[getVertexIndex(src)].getAdj())[i].dest == dest) {
+                if((graph[getVertexIndex(src)].getAdj())[i].weight > w) {
+                    (graph[getVertexIndex(src)].getAdj())[i].weight = w;
+                }
+            }
+        }
     }
 }
 
@@ -175,12 +179,3 @@ void Graph::multiExpress(string src, string dest) {
         return;
     }
 } // shortest path (Dijkstra)
-
-
-// E needs pointers to V in graph,
-// because when we change in graph the V in E needs to adjust
-
-
-/*
- * NEED TO SET DEFAULT PARAMETERS FOR VERTICES AND EDGES TO SEE IF CODE OK
- */

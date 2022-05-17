@@ -38,7 +38,7 @@ public:
 
     void changeVisit(bool a) {visited = a;}
 
-    bool containEdge(const string& dest, double w) const;
+    bool containEdge(const string& dest) const;
     void addEdge(string dest, double w, Transit_time tt);
 };
 

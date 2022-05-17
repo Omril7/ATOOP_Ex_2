@@ -4,16 +4,16 @@
 
 #include "Station.h"
 
-bool Station::containEdge(const string& dest, double w) const {
+bool Station::containEdge(const string& dest) const {
     for(auto i : adjList) {
-        if(i.dest == dest && i.weight == w) {
+        if(i.dest == dest) {
             return true;
         }
     }
     return false;
 }
 void Station::addEdge(string dest, double w, Transit_time tt) {
-    if(!containEdge(dest, w)) {
+    if(!containEdge(dest)) {
         edge e;
         e.dest = dest;
         e.weight = w;
