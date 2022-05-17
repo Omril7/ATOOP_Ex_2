@@ -4,6 +4,31 @@
 #include <cstring>
 #include <array>
 
+void MExpress(string src, string dest, Graph bg, Graph tg, Graph sg, Graph rg ){
+    Graph qgprah;
+    for (auto i : bg.getGraph()) {
+        for (auto j : i.getAdj()) {
+            qgprah.addEdge(i.getName(), j.dest, j.weight);
+        }
+    }
+    for (auto i : tg.getGraph()) {
+        for (auto j : i.getAdj()) {
+            qgprah.addEdge(i.getName(), j.dest, j.weight);
+        }
+    }
+    for (auto i : sg.getGraph()) {
+        for (auto j : i.getAdj()) {
+            qgprah.addEdge(i.getName(), j.dest, j.weight);
+        }
+    }
+    for (auto i : rg.getGraph()) {
+        for (auto j : i.getAdj()) {
+            qgprah.addEdge(i.getName(), j.dest, j.weight);
+        }
+    }
+    qgprah.multiExpress(src, dest);
+}
+
 int main(int argc, char** argv) {
     if(argc < 3) {
         cerr << "Not enough information" << endl;
@@ -168,7 +193,7 @@ int main(int argc, char** argv) {
                     cerr << params[1] << " does not exist in the current network. \n";
                 }
                 else {
-                    cout << "now multiExpress: " << params[0] << " " << params[1] << endl;
+                    MExpress(params[0], params[1], busGraph, tramGraph, sprinterGraph, railGraph);
                 }
             }
         }

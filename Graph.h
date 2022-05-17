@@ -23,6 +23,7 @@ private:
     Transit_time tt;        // information of all kind of stations
 
 public:
+    Graph() : graphType("Q"), waiting_t(0) {}
     Graph(Transit_time t, string gt, int st) : tt(t), graphType(std::move(gt)), waiting_t(st) {}
 
     void addVertex(string v);

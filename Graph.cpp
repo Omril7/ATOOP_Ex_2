@@ -6,6 +6,8 @@
 #include <array>
 #include "Graph.h"
 
+enum{INF = 999999};
+
 bool Graph::containVertex(const string& v) const {
     for(auto & i : graph) {
         if(i.getName() == v) {
@@ -40,12 +42,12 @@ void Graph::addEdge(const string& src, const string& dest, double w) {
         addVertex(src);
         addVertex(dest);
         i = getVertexIndex(src);
-        graph[i].addEdge(dest, w, tt);
+        graph[i].addEdge(dest, w);
     }
     else { // if contains that edge - set min_weight{graph[src][dest].w, w}
         i = graph[getVertexIndex(src)].getIndex(dest);
         if((graph[getVertexIndex(src)].getAdj())[i].weight > w) {
-            graph[getVertexIndex(src)].addEdge(dest, w, tt);
+            graph[getVertexIndex(src)].addEdge(dest, w);
         }
     }
 }
@@ -174,7 +176,7 @@ void Graph::uniExpress(string src, string dest) {
     int n = static_cast<int>(graph.size());
     vector<double> dist(n);
     for(int i=0; i<n; i++) {
-        dist[i] = 100;
+        dist[i] = INF;
     } // init to INF
 
     pq.push(make_pair(0,src));
@@ -194,17 +196,52 @@ void Graph::uniExpress(string src, string dest) {
             }
         }
     }
-    if(dist[getVertexIndex(dest)] == 100) {
+    if(dist[getVertexIndex(dest)] == INF) {
         cout << graphType << ": " << "route unavailable" << endl;
         return;
     }
     cout << graphType << ": " << dist[getVertexIndex(dest)]-waiting_t << endl;
 
 } // shortest path (Dijkstra)
-
 void Graph::multiExpress(string src, string dest) {
-    if(graph.empty()) {
-        cout << graphType << ": " << "no outbound travel" << endl;
+    if(graph.empty() || !containVertex(src) || !containVertex(dest)) {
+        cout << graphType << ": " << "route unavailable" << endl;
         return;
     }
-} // shortest path (Dijkstra)
+
+    typedef pair<double,string> iPair;
+    auto Predicate = [](iPair& a, iPair& b) {return a.first < b.first;};
+    priority_queue<iPair,vector<iPair>, decltype(Predicate)> pq(Predicate);
+
+    int n = static_cast<int>(graph.size());
+    vector<double> dist(n);
+    for(int i=0; i<n; i++) {
+        dist[i] = INF;
+    } // init to INF
+
+    pq.push(make_pair(0,src));
+    dist[getVertexIndex(src)] = 0;
+
+    while(!pq.empty()) {
+        string u = pq.top().second;
+        pq.pop();
+
+        for(int i=0; i<static_cast<int>(graph[getVertexIndex(u)].getAdj().size()); i++) {
+            string v = (graph[getVertexIndex(u)].getAdj())[i].dest;
+            double w = (graph[getVertexIndex(u)].getAdj())[i].weight;
+            int Vtt = graph[getVertexIndex(v)].getTT();
+            if(dist[getVertexIndex(v)] > dist[getVertexIndex(u)] + w + Vtt) {
+                dist[getVertexIndex(v)] = dist[getVertexIndex(u)] + w + Vtt;
+                pq.push(make_pair(dist[getVertexIndex(v)], v));
+            }
+        }
+    }
+    if(dist[getVertexIndex(dest)] == INF) {
+        cout << graphType << ": " << "route unavailable" << endl;
+        return;
+    }
+    cout << "Shortest path length: " << dist[getVertexIndex(dest)]-graph[getVertexIndex(src)].getTT() << endl;
+
+}
+
+// shortest path (Dijkstra)

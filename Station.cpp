@@ -12,7 +12,7 @@ bool Station::containEdge(const string& dest) const {
     }
     return false;
 }
-void Station::addEdge(string dest, double w, Transit_time tt) {
+void Station::addEdge(string dest, double w) {
     if(!containEdge(dest)) {
         edge e;
         e.dest = dest;
