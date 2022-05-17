@@ -1,0 +1,17 @@
+load bus_1.dat
+load tram_2.dat
+load
+outbound TelAviv
+outbound Haifa Jerusalem
+outbound
+inbound TelAviv
+inbound Haifa Jerusalem
+inbound
+uniExpress TelAviv Haifa
+uniExpress Haifa
+uniExpress
+multiExpress TelAviv Haifa
+multiExpress Haifa
+multiExpress
+print
+EXIT
