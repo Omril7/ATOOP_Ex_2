@@ -308,3 +308,27 @@ void Graph::shortestPath(int src) {
     for (int i = 0; i < V; ++i)
         printf("%d \t\t %d\n", i, dist[i]);
 }
+
+//    busGraph.addEdge("LagoonSouth", "LagoonNorth", 34);
+//    busGraph.addEdge("LagoonNorth", "LagoonSouth", 36);
+//
+//    tramGraph.addEdge("CanibalCove", "PiccaninnyPlains", 4);
+//    tramGraph.addEdge("PiccaninnyPlains", "Neverseas", 3);
+//    tramGraph.addEdge("Neverseas", "CSPiccaninnyMain", 4);
+//    tramGraph.addEdge("CSPiccaninnyMain", "NeverlandPlains", 3);
+//    tramGraph.addEdge("NeverlandPlains", "PixieHollow", 5);
+//    tramGraph.addEdge("PixieHollow", "MazeOfRegrets", 4);
+//    tramGraph.addEdge("MazeOfRegrets", "NeverpeakMountain", 7);
+//    tramGraph.addEdge("NeverpeakMountain", "CanibalCove", 8);
+//
+//    sprinterGraph.addEdge("LagoonEast", "LagoonWest", 12);
+//    sprinterGraph.addEdge("LagoonWest", "LagoonEast", 12);
+//
+//    railGraph.addEdge("LagoonSouth", "LagoonWest", 6);
+//    railGraph.addEdge("LagoonWest", "LagoonSouth", 7);
+//    railGraph.addEdge("LagoonSouth", "LagoonEast", 8);
+//    railGraph.addEdge("LagoonEast", "LagoonSouth", 9);
+//    railGraph.addEdge("LagoonNorth", "LagoonWest", 15);
+//    railGraph.addEdge("LagoonWest", "LagoonNorth", 14);
+//    railGraph.addEdge("LagoonNorth", "LagoonEast", 17);
+//    railGraph.addEdge("LagoonEast", "LagoonNorth", 16);

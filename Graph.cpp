@@ -35,19 +35,17 @@ bool Graph::containEdge(const string& src, const string& dest) const {
     return false;
 }
 void Graph::addEdge(const string& src, const string& dest, double w) {
+    int i;
     if(!containEdge(src, dest)) {
         addVertex(src);
         addVertex(dest);
-        int i = getVertexIndex(src);
+        i = getVertexIndex(src);
         graph[i].addEdge(dest, w, tt);
     }
     else { // if contains that edge - set min_weight{graph[src][dest].w, w}
-        for(int i=0; i<static_cast<int>(graph[getVertexIndex(src)].getAdj().size()); i++) {
-            if((graph[getVertexIndex(src)].getAdj())[i].dest == dest) {
-                if((graph[getVertexIndex(src)].getAdj())[i].weight > w) {
-                    (graph[getVertexIndex(src)].getAdj())[i].weight = w;
-                }
-            }
+        i = graph[getVertexIndex(src)].getIndex(dest);
+        if((graph[getVertexIndex(src)].getAdj())[i].weight > w) {
+            graph[getVertexIndex(src)].addEdge(dest, w, tt);
         }
     }
 }
@@ -70,6 +68,37 @@ Graph& Graph::getReverse() {
     return *rev;
 }
 
+bool Graph::load(string filename) {
+    int count;
+    string src, dest;
+    double w;
+    string buffer, word;
+    stringstream ss;
+    ifstream ifs(filename);
+    if (!ifs) {
+        cerr << "ERROR opening the specified file." << endl;
+        return false;
+    }
+    while(getline(ifs, buffer, '\n')) {
+        count = 0;
+        ss.clear();
+        ss.str(buffer);
+        while(ss >> word && count < 3) {
+            if(count == 0) {
+                src = word;
+            }
+            if(count == 1) {
+                dest = word;
+            }
+            if(count == 2) {
+                std::istringstream(word) >> w;
+            }
+            count++;
+        }
+        addEdge(src, dest, w);
+    }
+    return true;
+}
 void Graph::outBound(string src) {
     if(graph.empty() || !containVertex(src)) {
         cout << graphType << ": " << "no outbound travel" << endl;

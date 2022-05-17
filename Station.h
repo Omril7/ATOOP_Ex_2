@@ -13,8 +13,6 @@
 
 using namespace std;
 
-class Station;
-
 struct edge {
     string dest;
     double weight;
@@ -35,6 +33,7 @@ public:
     int getTT() const {return transit_t;}
     bool isVisited() const {return visited;}
     vector<edge> getAdj() const {return adjList;}
+    int getIndex(string dest) const;
 
     void changeVisit(bool a) {visited = a;}
 

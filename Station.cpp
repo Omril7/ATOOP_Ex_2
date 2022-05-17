@@ -19,4 +19,15 @@ void Station::addEdge(string dest, double w, Transit_time tt) {
         e.weight = w;
         adjList.push_back(e);
     }
+    else {
+        adjList[getIndex(dest)].weight = w;
+    }
+}
+int Station::getIndex(string dest) const {
+    for(int i=0; i<static_cast<int>(adjList.size()); i++) {
+        if(adjList[i].dest == dest) {
+            return i;
+        }
+    }
+    return -1;
 }

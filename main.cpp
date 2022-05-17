@@ -4,28 +4,6 @@
 #include <cstring>
 #include <array>
 
-struct Trio {
-    char type;
-    string src;
-    string dest;
-    double weight;
-};
-vector<Trio> getFromFile(string fileName) {
-    vector<Trio> edges;
-    if(fileName[0] == 'b') {
-        // add input_files[i] to busGraph
-    }
-    if(fileName[0] == 't') {
-        // add input_files[i] to tramGraph
-    }
-    if(fileName[0] == 's') {
-        // add input_files[i] to sprinterGraph
-    }
-    if(fileName[0] == 'r') {
-        // add input_files[i] to railGraph
-    }
-}
-
 int main(int argc, char** argv) {
     if(argc < 3) {
         cerr << "Not enough information" << endl;
@@ -60,50 +38,20 @@ int main(int argc, char** argv) {
     Graph sprinterGraph(ex2->getTT(), "sprinter", ex2->getWT().sprinter);
     Graph railGraph(ex2->getTT(), "rail", ex2->getWT().rail);
 
-    /*
-     * SET INPUT FILES HERE
-     */
     for(int i=0; i<static_cast<int>(input_files.size()); i++) {
-        vector<Trio> temp = getFromFile(input_files[i]);
-        for(int j=0; j<static_cast<int>(temp.size()); j++) {
-            if(temp[j].type == 'b') {
-                busGraph.addEdge(temp[j].src, temp[j].dest, temp[j].weight);
-            }
-            if(temp[j].type == 't') {
-                tramGraph.addEdge(temp[j].src, temp[j].dest, temp[j].weight);
-            }
-            if(temp[j].type == 's') {
-                sprinterGraph.addEdge(temp[j].src, temp[j].dest, temp[j].weight);
-            }
-            if(temp[j].type == 'r') {
-                railGraph.addEdge(temp[j].src, temp[j].dest, temp[j].weight);
-            }
+        if(!strncmp(input_files[i], "bus", 3)) {
+            busGraph.load(input_files[i]);
+        }
+        if(!strncmp(input_files[i], "tram", 4)) {
+            tramGraph.load(input_files[i]);
+        }
+        if(!strncmp(input_files[i], "sprinter", 8)) {
+            sprinterGraph.load(input_files[i]);
+        }
+        if(!strncmp(input_files[i], "rail", 4)) {
+            railGraph.load(input_files[i]);
         }
     }
-
-    busGraph.addEdge("LagoonSouth", "LagoonNorth", 34);
-    busGraph.addEdge("LagoonNorth", "LagoonSouth", 36);
-
-    tramGraph.addEdge("CanibalCove", "PiccaninnyPlains", 4);
-    tramGraph.addEdge("PiccaninnyPlains", "Neverseas", 3);
-    tramGraph.addEdge("Neverseas", "CSPiccaninnyMain", 4);
-    tramGraph.addEdge("CSPiccaninnyMain", "NeverlandPlains", 3);
-    tramGraph.addEdge("NeverlandPlains", "PixieHollow", 5);
-    tramGraph.addEdge("PixieHollow", "MazeOfRegrets", 4);
-    tramGraph.addEdge("MazeOfRegrets", "NeverpeakMountain", 7);
-    tramGraph.addEdge("NeverpeakMountain", "CanibalCove", 8);
-
-    sprinterGraph.addEdge("LagoonEast", "LagoonWest", 12);
-    sprinterGraph.addEdge("LagoonWest", "LagoonEast", 12);
-
-    railGraph.addEdge("LagoonSouth", "LagoonWest", 6);
-    railGraph.addEdge("LagoonWest", "LagoonSouth", 7);
-    railGraph.addEdge("LagoonSouth", "LagoonEast", 8);
-    railGraph.addEdge("LagoonEast", "LagoonSouth", 9);
-    railGraph.addEdge("LagoonNorth", "LagoonWest", 15);
-    railGraph.addEdge("LagoonWest", "LagoonNorth", 14);
-    railGraph.addEdge("LagoonNorth", "LagoonEast", 17);
-    railGraph.addEdge("LagoonEast", "LagoonNorth", 16);
 
     string line, command, word;
     string params[2];
@@ -128,13 +76,26 @@ int main(int argc, char** argv) {
                 cerr << "Not enough information to load.\nPlease try again." << endl;
             }
             else {
-                cout << "now loaded file: " << params[0] << endl;
-//                if(loaded) {
-//                    cout << "Update was successful." << endl;
-//                }
-//                else {
-//                    cerr << "ERROR opening the specified file." << endl;
-//                }
+                const char* temp = params[0].data();
+                if(!strncmp(temp, "bus", 3)) {
+                    if(busGraph.load(temp))
+                        cout << "Update was successful." << endl;
+                }
+                else if(!strncmp(temp, "tram", 4)) {
+                    if(tramGraph.load(temp))
+                        cout << "Update was successful." << endl;
+                }
+                else if(!strncmp(temp, "sprinter", 8)) {
+                    if(sprinterGraph.load(temp))
+                        cout << "Update was successful." << endl;
+                }
+                else if(!strncmp(temp, "rail", 4)) {
+                    if(railGraph.load(temp))
+                        cout << "Update was successful." << endl;
+                }
+                else {
+                    cerr << "ERROR opening the specified file." << endl;
+                }
             }
 
         }
@@ -213,7 +174,6 @@ int main(int argc, char** argv) {
         }
         else if(command == "print") {
             out << busGraph << endl << tramGraph << endl << sprinterGraph << endl << railGraph << endl;
-            cout << "printing to " << output << " the graph" << endl;
         }
         else if(command != "EXIT"){
             cerr << command  << " is not an option!" << endl;
@@ -222,4 +182,3 @@ int main(int argc, char** argv) {
     }
     return 0;
 }
-

@@ -37,18 +37,19 @@ public:
     int getVertexIndex(const string& v) const;
     Graph& getReverse();
 
+    bool load(string filename);                                     // [1]  V
     void outBound(string src);                                      // [2]  V
     void inBound(string dest);                                      // [3]  V
-    void uniExpress(string src, string dest);                       // [4]
+    void uniExpress(string src, string dest);                       // [4]  V
     void multiExpress(string src, string dest);                     // [5]
-    friend ostream& operator<<(ostream& os, const Graph& graph);    // [6] V
+    friend ostream& operator<<(ostream& os, const Graph& graph);    // [6]  V
 };
 inline ostream& operator<<(ostream& os, const Graph& graph) {
     os << graph.getGraphT() << " : " << endl;
     for(int i=0; i<static_cast<int>(graph.getGraph().size()); i++) {
-        os << '\t' << graph.getGraph()[i].getName() << " -> ";
+        os << '\t' << graph.getGraph()[i].getName() << "\t-> ";
         for(int j=0; j<static_cast<int>(graph.getGraph()[i].getAdj().size()); j++) {
-            os << (graph.getGraph()[i].getAdj())[j].dest << "(" << (graph.getGraph()[i].getAdj())[j].weight << ") ";
+            os << (graph.getGraph()[i].getAdj())[j].dest << "(" << (graph.getGraph()[i].getAdj())[j].weight << ")\t";
         }
         os << endl;
     }
