@@ -1,8 +1,6 @@
 #include <iostream>
 #include "Graph.h"
-#include "Ex2.h"
 #include <cstring>
-#include <array>
 
 void MExpress(string src, string dest, Graph bg, Graph tg, Graph sg, Graph rg ){
     Graph qgprah;
@@ -38,7 +36,7 @@ int main(int argc, char** argv) {
     string output = "output.dat";
     std::vector<char*> input_files;
     int i=2;
-    while(strcmp(argv[i],"-c") != 0 && strcmp(argv[i],"-o") != 0 && i<argc) {
+    while(i<argc && strcmp(argv[i],"-c") != 0 && strcmp(argv[i],"-o") != 0) {
         input_files.push_back(argv[i]);
         i++;
     }
@@ -65,16 +63,32 @@ int main(int argc, char** argv) {
 
     for(int i=0; i<static_cast<int>(input_files.size()); i++) {
         if(!strncmp(input_files[i], "bus", 3)) {
-            busGraph.load(input_files[i]);
+            if( !busGraph.load(input_files[i]) ) {
+                cerr << "ERROR opening the specified file." << endl;
+                exit(-1);
+            }
         }
-        if(!strncmp(input_files[i], "tram", 4)) {
-            tramGraph.load(input_files[i]);
+        else if(!strncmp(input_files[i], "tram", 4)) {
+            if( !tramGraph.load(input_files[i]) ) {
+                cerr << "ERROR opening the specified file." << endl;
+                exit(-1);
+            }
         }
-        if(!strncmp(input_files[i], "sprinter", 8)) {
-            sprinterGraph.load(input_files[i]);
+        else if(!strncmp(input_files[i], "sprinter", 8)) {
+            if( !sprinterGraph.load(input_files[i]) ) {
+                cerr << "ERROR opening the specified file." << endl;
+                exit(-1);
+            }
         }
-        if(!strncmp(input_files[i], "rail", 4)) {
-            railGraph.load(input_files[i]);
+        else if(!strncmp(input_files[i], "rail", 4)) {
+            if( !railGraph.load(input_files[i]) ) {
+                cerr << "ERROR opening the specified file." << endl;
+                exit(-1);
+            }
+        }
+        else {
+            cerr << "ERROR opening the specified file." << endl;
+            exit(-1);
         }
     }
 
@@ -105,18 +119,22 @@ int main(int argc, char** argv) {
                 if(!strncmp(temp, "bus", 3)) {
                     if(busGraph.load(temp))
                         cout << "Update was successful." << endl;
+                    else cerr << "ERROR opening the specified file." << endl;
                 }
                 else if(!strncmp(temp, "tram", 4)) {
                     if(tramGraph.load(temp))
                         cout << "Update was successful." << endl;
+                    else cerr << "ERROR opening the specified file." << endl;
                 }
                 else if(!strncmp(temp, "sprinter", 8)) {
                     if(sprinterGraph.load(temp))
                         cout << "Update was successful." << endl;
+                    else cerr << "ERROR opening the specified file." << endl;
                 }
                 else if(!strncmp(temp, "rail", 4)) {
                     if(railGraph.load(temp))
                         cout << "Update was successful." << endl;
+                    else cerr << "ERROR opening the specified file." << endl;
                 }
                 else {
                     cerr << "ERROR opening the specified file." << endl;

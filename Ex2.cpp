@@ -3,6 +3,7 @@
 //
 
 #include "Ex2.h"
+
 Ex2::Ex2(char *config) {
     if(config != nullptr){
         ifstream cnfg(config);

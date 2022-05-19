@@ -5,26 +5,23 @@
 #ifndef EXERCISE_2_GRAPH_H
 #define EXERCISE_2_GRAPH_H
 
-#include "Ex2.h"
 #include "Station.h"
-#include <map>
-#include <utility>
-#include <vector>
-#include <list>
-#include <iostream>
-#include <cstring>
-#include <memory>
+struct Transit_time;
 
 class Graph {
 private:
     vector<Station> graph;  // vector of Stations(in stations we have vector of edges)
+    Transit_time tt;        // information of all kind of stations
     string graphType;       // bus\tram\sprinter\rail
     const int waiting_t;    // per vehicle
-    Transit_time tt;        // information of all kind of stations
 
 public:
     Graph() : graphType("Q"), waiting_t(0) {}
-    Graph(Transit_time t, string gt, int st) : tt(t), graphType(std::move(gt)), waiting_t(st) {}
+    Graph(Transit_time t, string gt, int st) : graphType(std::move(gt)), waiting_t(st) {
+        tt.centraal = t.centraal;
+        tt.intercity = t.intercity;
+        tt.stad = t.stad;
+    }
 
     void addVertex(string v);
     void addEdge(const string& src, const string& dest, double w);
@@ -33,7 +30,6 @@ public:
 
     vector<Station> getGraph() const {return graph;}
     string getGraphT() const {return graphType;}
-    int getWT() const {return waiting_t;}
 
     int getVertexIndex(const string& v) const;
     Graph& getReverse();

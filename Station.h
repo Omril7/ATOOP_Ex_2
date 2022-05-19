@@ -5,10 +5,7 @@
 #ifndef EXERCISE_2_STATION_H
 #define EXERCISE_2_STATION_H
 
-#include <string>
-#include <utility>
 #include <vector>
-#include <memory>
 #include "Ex2.h"
 
 using namespace std;

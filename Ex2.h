@@ -8,6 +8,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -21,6 +22,7 @@ struct Transit_time {
     int intercity = 15;
     int centraal = 10;
     int stad = 5;
+    Transit_time() : intercity(15), centraal(10), stad(5) {}
 };
 
 class Ex2 {

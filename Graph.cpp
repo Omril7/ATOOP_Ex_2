@@ -3,7 +3,7 @@
 //
 
 #include <queue>
-#include <array>
+#include <list>
 #include "Graph.h"
 
 enum{INF = 999999};
@@ -78,7 +78,6 @@ bool Graph::load(string filename) {
     stringstream ss;
     ifstream ifs(filename);
     if (!ifs) {
-        cerr << "ERROR opening the specified file." << endl;
         return false;
     }
     while(getline(ifs, buffer, '\n')) {
@@ -96,6 +95,10 @@ bool Graph::load(string filename) {
                 std::istringstream(word) >> w;
             }
             count++;
+        }
+        if(w < 0) {
+            cerr << "weight is negative!" << endl;
+            exit(-1);
         }
         addEdge(src, dest, w);
     }
@@ -202,7 +205,7 @@ void Graph::uniExpress(string src, string dest) {
     }
     cout << graphType << ": " << dist[getVertexIndex(dest)]-waiting_t << endl;
 
-} // shortest path (Dijkstra)
+} // shortest path (Dijkstra) {WT}
 void Graph::multiExpress(string src, string dest) {
     if(graph.empty() || !containVertex(src) || !containVertex(dest)) {
         cout << graphType << ": " << "route unavailable" << endl;
@@ -242,6 +245,4 @@ void Graph::multiExpress(string src, string dest) {
     }
     cout << "Shortest path length: " << dist[getVertexIndex(dest)]-graph[getVertexIndex(src)].getTT() << endl;
 
-}
-
-// shortest path (Dijkstra)
+} // shortest path (Dijkstra) {TT}
