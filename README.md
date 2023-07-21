@@ -7,4 +7,5 @@
 </p>
 
 ## Homework #2
-Public transportation network using Move semantics
+### Public transportation network using Move semantics
+more data about this exercise can be found in the ex2 - ATOOP spring 2022.pdf file
